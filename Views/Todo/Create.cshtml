@@ -1,0 +1,11 @@
+﻿@model TodoTutorial.Models.TodoItem
+
+<h2>Create Todo</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group mb-3">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

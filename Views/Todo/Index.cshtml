@@ -1,41 +1,60 @@
 ﻿@model IEnumerable<TodoTutorial.Models.TodoItem>
 
-<h2>Todo List</h2>
-
-<form asp-action="Index" method="get">
-    <div class="input-group mb-3">
-        <input type="text" name="SearchQuery" class="form-control" placeholder="Search tasks..." value="@ViewData["SearchQuery"]" />
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-</form>
-
-@if (!Model.Any())
-{
-    <p class="text-muted">No tasks found matching your search.</p>
+@{
+    ViewData["Title"] = "Todo List";
 }
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Completed</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+
+<div class="container">
+    <h1 class="title">Just do it.</h1>
+    <!-- Task Input -->
+    <form method="get" class="d-flex justify-content-center mb-4" action="/">
+        <input type="text" name="SearchQuery" value="@ViewData["SearchQuery"]" class="task-input" placeholder="Add a task..." id="taskInput" />
+    </form>
+
+    @if (Model is not null && Model.Count() > 0)
+    {
+        <div class="task-list">
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Title</td>
-                    <td>@item.IsCompleted</td>
-                    <td>
-                        <a href="@Url.Action("Edit", new { id = item.Id })">Edit</a>  |
-                        <a href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+                <div class="task-card">
 
+                    <span class="task-title">
+                        @if (item.IsCompleted)
+                        {
+                            <i class="fas fa-check-circle complete-btn" title="Completed"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-times-circle pending-btn" title="Pending"></i>
+                        }
+                        @item.Title
+                    </span>
+                    <div class="task-actions">
+
+                        <a href="@Url.Action("Edit", new { id = item.Id })"><i class="fas fa-edit"></i></a>
+                        <a href="@Url.Action("Delete", new { id = item.Id })"><i class="fas fa-trash-alt delete-btn"></i></a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="task-list">
+            <div class="task-card">
+                <span class="task-title">No matching result found.</span>
+            </div>
+        </div>
+    }
+    <!-- Add Task Button -->
+    <button class="add-task-btn" onclick="window.location.href='@Url.Action("Create")'">
+        <i class="fas fa-plus"></i>
+    </button>
+</div>
+
+
+
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<!-- Custom Styles for Animations -->
